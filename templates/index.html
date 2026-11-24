@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">CAMPUS SECOND-HAND COMMUNITY</span>
+    <h1>让闲置重新<br><em>创造价值。</em></h1>
+    <p>教材、数码、宿舍好物，在校园里找到下一位需要它的人。</p>
+    <a class="button light" href="{{ url_for('publish') }}">＋ 发布我的闲置</a>
+  </div>
+  <div class="hero-art"><div class="orbit orbit1"></div><div class="orbit orbit2"></div><div class="leaf">↻</div><div class="art-caption">REUSE · SHARE · GROW</div></div>
+  <div class="hero-stats"><div><strong>循环利用</strong><span>让资源持续流动</span></div><div><strong>校园交易</strong><span>沟通更方便</span></div><div><strong>绿色生活</strong><span>从每件闲置开始</span></div></div>
+</section>
+<section class="section-head">
+  <div><span class="eyebrow green">DISCOVER</span><h2>发现校园好物</h2><p>每一件闲置，都可能是别人的刚需。</p></div>
+  <span class="count-pill">{{ products|length }} 件好物</span>
+</section>
+<form class="search-panel" method="get">
+  <input name="q" value="{{ q }}" placeholder="搜索教材、耳机、台灯……">
+  <select name="category"><option value="">全部分类</option>{% for c in ["教材书籍","数码产品","生活用品","服饰箱包","运动户外","其他"] %}<option value="{{ c }}" {% if category==c %}selected{% endif %}>{{ c }}</option>{% endfor %}</select>
+  <input name="campus" value="{{ campus }}" placeholder="校区">
+  <button class="button primary">搜索</button>
+</form>
+<div class="product-grid">
+{% for p in products %}
+  <a class="product-card" href="{{ url_for('product_detail', product_id=p.id) }}">
+    <div class="product-image">
+      {% if p.image %}<img src="{{ url_for('uploaded_file', filename=p.image) }}" alt="{{ p.title }}">
+      {% else %}<div class="placeholder-art"><span>{{ p.category[:2] }}</span><small>CAMPUS LOOP</small></div>{% endif %}
+      <span class="condition">{{ p.condition }}</span>
+    </div>
+    <div class="product-info"><span class="category">{{ p.category }}</span><h3>{{ p.title }}</h3><div class="product-bottom"><strong>¥{{ "%.2f"|format(p.price) }}</strong><small>{{ p.campus }} · {{ p.seller }}</small></div></div>
+  </a>
+{% else %}
+  <div class="empty"><div>⌕</div><h3>暂时没有找到相关商品</h3><p>试试其他关键词，或发布第一件闲置。</p></div>
+{% endfor %}
+</div>
+{% endblock %}

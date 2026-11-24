@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ '注册' if mode=='register' else '登录' }} · CampusLoop{% endblock %}
+{% block content %}
+<div class="auth-shell"><div class="auth-aside"><span class="eyebrow">WELCOME TO CAMPUSLOOP</span><h1>让好物<br><em>继续发光。</em></h1><p>连接校园里的闲置与需求，让每一次分享都更有意义。</p></div>
+<div class="auth-card"><span class="eyebrow green">YOUR CAMPUS ACCOUNT</span><h2>{{ '创建账号' if mode=='register' else '欢迎回来' }}</h2><p>{{ '加入校园循环社区' if mode=='register' else '登录后继续探索校园好物' }}</p>
+<form method="post"><input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+<label>用户名</label><input name="username" required minlength="2" maxlength="24" placeholder="请输入用户名">
+<label>密码</label><input name="password" type="password" required minlength="8" placeholder="至少8位密码">
+<button class="button primary full">{{ '注册账号' if mode=='register' else '登录' }}</button></form>
+<div class="auth-switch">{% if mode=='register' %}已有账号？<a href="{{ url_for('login') }}">立即登录</a>{% else %}还没有账号？<a href="{{ url_for('register') }}">免费注册</a>{% endif %}</div>
+{% if mode=='login' %}<div class="demo-tip">体验账号：demo　密码：campus123</div>{% endif %}
+</div></div>
+{% endblock %}

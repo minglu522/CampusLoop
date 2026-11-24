@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ p.title }} · CampusLoop{% endblock %}
+{% block content %}
+<div class="detail-layout"><div class="detail-image">{% if p.image %}<img src="{{ url_for('uploaded_file', filename=p.image) }}" alt="{{ p.title }}">{% else %}<div class="placeholder-art large"><span>{{ p.category[:2] }}</span><small>CAMPUS LOOP</small></div>{% endif %}</div>
+<div class="detail-content"><span class="eyebrow green">{{ p.category }}</span><h1>{{ p.title }}</h1><div class="detail-price">¥{{ "%.2f"|format(p.price) }}</div><div class="detail-tags"><span>{{ p.condition }}</span><span>{{ p.campus }}</span><span>卖家：{{ p.seller }}</span></div><h3>商品描述</h3><p class="description">{{ p.description }}</p>
+{% if current_user %}
+<form method="post" action="{{ url_for('favorite', product_id=p.id) }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><button class="button secondary full">{{ '♥ 已收藏（点击取消）' if favorited else '♡ 收藏商品' }}</button></form>
+{% if current_user != p.seller and p.status == 'available' %}<form class="interest-form" method="post" action="{{ url_for('interest', product_id=p.id) }}"><input type="hidden" name="_csrf" value="{{ csrf_token() }}"><label>给卖家留言（可选）</label><textarea name="message" rows="2" maxlength="300" placeholder="你好，我想了解一下这件商品……"></textarea><button class="button primary full">发起购买意向</button></form>{% endif %}
+{% else %}<a class="button primary full" href="{{ url_for('login') }}">登录后收藏或联系卖家</a>{% endif %}
+<p class="safety-note">安全提示：建议在校园公共区域当面验货、自提，不要向陌生人透露密码或验证码。</p></div></div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}发布闲置 · CampusLoop{% endblock %}
+{% block content %}
+<div class="form-page"><span class="eyebrow green">GIVE IT A SECOND LIFE</span><h1>发布一件闲置</h1><p>认真填写商品信息，让下一位使用者更放心。</p>
+<form class="listing-form" method="post" enctype="multipart/form-data"><input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+<div class="form-row"><div><label>商品名称 *</label><input name="title" required maxlength="60" placeholder="例如：大学英语教材"></div><div><label>价格（元） *</label><input name="price" type="number" required min="0" max="100000" step="0.01" placeholder="0.00"></div></div>
+<label>商品描述 *</label><textarea name="description" required maxlength="1000" rows="4" placeholder="介绍新旧程度、功能情况、配件和交易说明……"></textarea>
+<div class="form-row"><div><label>商品分类</label><select name="category">{% for c in ["教材书籍","数码产品","生活用品","服饰箱包","运动户外","其他"] %}<option>{{ c }}</option>{% endfor %}</select></div><div><label>新旧程度</label><select name="condition">{% for c in ["全新","九成新","八成新","七成新及以下"] %}<option>{{ c }}</option>{% endfor %}</select></div></div>
+<div class="form-row"><div><label>所在校区 *</label><input name="campus" required placeholder="例如：东校区"></div><div><label>商品图片（可选，最大5MB）</label><input type="file" name="image" accept=".png,.jpg,.jpeg,.webp"></div></div>
+<button class="button primary">发布商品</button></form></div>
+{% endblock %}
